@@ -17,9 +17,9 @@ data class Post(
     val from_id: Int,   // Идентификатор автора записи (от чьего имени опубликована запись)
     val text: String,   // Текст записи
     val friends_only: Boolean,  // true - если запись была создана с опцией «Только для друзей»
-    val can_pin: Boolean,   // Информация о том, может ли текущий пользователь закрепить запись (true, false)
-    val can_delete: Boolean,    // Информация о том, может ли текущий пользователь удалить запись (true, false)
-    val can_edit: Boolean,  // Информация о том, может ли текущий пользователь редактировать запись (true, false)
+    val can_pin: Boolean,   // Информация о том, может ли текущий пользователь закрепить запись
+    val can_delete: Boolean,    // Информация о том, может ли текущий пользователь удалить запись
+    val can_edit: Boolean,  // Информация о том, может ли текущий пользователь редактировать запись
     val date: Long   // Время публикации записи в формате unixtime
 )
 
@@ -28,6 +28,23 @@ data class User(
     val first_name: String, // Имя
     val last_name: String   // Фамилия
 )
+
+object UserAdd {
+
+    private var users = emptyArray<User>()
+    private var lastId = 0
+
+    fun add(user: User): User {
+        users += user.copy(id = ++lastId)
+        return users.last()
+    }
+
+    fun printAll() {
+        for (user in users) {
+            println(user)
+        }
+    }
+}
 
 object WallService {
 
@@ -61,30 +78,18 @@ object WallService {
     }
 }
 
-
 object reposts {    // Информация о репостах записи («Рассказать друзьям»), объект с полями:
 
     var count = 0     // число пользователей, скопировавших запись;
+    var userRepost = 0  // репост записи текущего пользователя;
 
-    fun calculation() {
+    fun calculation(user: User) {
         count++
+        userRepost = user.id
     }
 
-//    fun user_reposted(user: User): Boolean{     // наличие репоста от текущего пользователя (true, false).
-//
-//    }
-
-    fun clear() {
-        count = 0
-    }
-}
-
-object views {      // Информация о просмотрах записи. Объект с единственным полем:
-
-    var count = 0     // число просмотров записи.
-
-    fun calculation() {
-        count++
+    fun user_reposted(user: User): Boolean {    // наличие репоста от текущего пользователя
+        return userRepost == user.id
     }
 
     fun clear() {
@@ -92,6 +97,18 @@ object views {      // Информация о просмотрах записи
     }
 }
 
+object views {      // Информация о просмотрах записи
+
+    var count = 0     // число просмотров записи
+
+    fun calculation(userId: User) {
+        count++
+    }
+
+    fun clear() {
+        count = 0
+    }
+}
 
 fun main() {
 
@@ -102,6 +119,14 @@ fun main() {
     println(WallService.update(Post(2, 1, 3, "Update Bla-Bla", true, true, false, false, timestamp)))
     WallService.printAll()
 
-    views.calculation()
-    println(views.count)
+    val user = User(100, "Anton", "Velasco")
+    UserAdd.add(user)
+    UserAdd.printAll()
+    println("Кол-во просмотров поста: ${views.count}")
+    views.calculation(user)
+    println("Кол-во просмотров поста: ${views.count}")
+
+    println("Кол-во репостов: ${reposts.count}")
+    reposts.calculation(user)
+    println("Кол-во репостов: ${reposts.count}")
 }
