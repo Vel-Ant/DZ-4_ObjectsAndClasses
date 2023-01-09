@@ -15,7 +15,7 @@ class WallServiceTest {
 
     @Test
     fun addNewPost() {
-        var posts = add(Post(1, 1, 1, "Bla-Bla", true, true, false, false, timestamp))
+        var posts = add(Post(1, 1, 1, "Bla-Bla", true, true, false, false, null, timestamp))
 
         val result = posts.id
 
@@ -24,8 +24,8 @@ class WallServiceTest {
 
     @Test
     fun updatePostFalse() {
-        var post = add(Post(1, 1, 1, "Bla-Bla", true, true, false, false, timestamp))
-        var newPost = Post(2, 1, 3, "Update Bla-Bla", true, true, false, false, timestamp)
+        var post = add(Post(1, 1, 1, "Bla-Bla", true, true, false, false, null, timestamp))
+        var newPost = Post(2, 1, 3, "Update Bla-Bla", true, true, false, false, null, timestamp)
 
         val result = update(newPost)
 
@@ -34,8 +34,8 @@ class WallServiceTest {
 
     @Test
     fun updatePostTrue() {
-        var post = add(Post(1, 1, 1, "Bla-Bla", true, true, false, false, timestamp))
-        var newPost = Post(1, 1, 3, "Update Bla-Bla", true, true, false, false, timestamp)
+        var post = add(Post(1, 1, 1, "Bla-Bla", true, true, false, false, null, timestamp))
+        var newPost = Post(1, 1, 3, "Update Bla-Bla", true, true, false, false, null, timestamp)
 
         val result = update(newPost)
 
