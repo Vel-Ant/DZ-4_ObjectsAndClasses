@@ -16,10 +16,10 @@ data class Post(
     val owner_id: Int,  // Идентификатор владельца стены, на которой размещена запись
     val from_id: Int,   // Идентификатор автора записи (от чьего имени опубликована запись)
     val text: String,   // Текст записи
-    val friends_only: Boolean,  // true - если запись была создана с опцией «Только для друзей»
-    val can_pin: Boolean,   // Информация о том, может ли текущий пользователь закрепить запись
-    val can_delete: Boolean,    // Информация о том, может ли текущий пользователь удалить запись
-    val can_edit: Boolean,  // Информация о том, может ли текущий пользователь редактировать запись
+    val friends_only: Boolean?,  // true - если запись была создана с опцией «Только для друзей»
+    val can_pin: Boolean?,   // Информация о том, может ли текущий пользователь закрепить запись
+    val can_delete: Boolean?,    // Информация о том, может ли текущий пользователь удалить запись
+    val can_edit: Boolean?,  // Информация о том, может ли текущий пользователь редактировать запись
     val date: Long   // Время публикации записи в формате unixtime
 )
 
@@ -112,7 +112,7 @@ object views {      // Информация о просмотрах записи
 
 fun main() {
 
-    val post = Post(1, 1, 2, "Bla-Bla", true, true, false, false, timestamp)
+    val post = Post(1, 1, 2, "Bla-Bla", true, true, false, null, timestamp)
     WallService.add(post)
     WallService.add(post)
     WallService.printAll()
