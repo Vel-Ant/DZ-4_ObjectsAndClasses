@@ -114,10 +114,12 @@ object views {      // Информация о просмотрах записи
 fun main() {
 
     val video1 = Video(15616, 154, "летящий самолет", "летящий самолет")
-    val audio1 = Audio(4234, 4543, "Depp Purple", "Smoke On The Water")
+    val audio1 = Audio(4234, 4543, "Deep Purple", "Smoke On The Water")
 
     val attachmentVideo1 = VideoAttachment(video1)
+    println(attachmentVideo1.type)
     val attachmentAudio1 = AudioAttachment(audio1)
+    println(attachmentAudio1.type)
 
     val post = Post(1, 1, 2, "Bla-Bla", true, true, false, null, arrayOf(attachmentVideo1, attachmentAudio1), timestamp)
     WallService.add(post)
