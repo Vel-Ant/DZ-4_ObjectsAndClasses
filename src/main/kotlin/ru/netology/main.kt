@@ -16,10 +16,11 @@ data class Post(
     val owner_id: Int,  // Идентификатор владельца стены, на которой размещена запись
     val from_id: Int,   // Идентификатор автора записи (от чьего имени опубликована запись)
     val text: String,   // Текст записи
-    val friends_only: Boolean,  // true - если запись была создана с опцией «Только для друзей»
-    val can_pin: Boolean,   // Информация о том, может ли текущий пользователь закрепить запись
-    val can_delete: Boolean,    // Информация о том, может ли текущий пользователь удалить запись
-    val can_edit: Boolean,  // Информация о том, может ли текущий пользователь редактировать запись
+    val friends_only: Boolean?,  // true - если запись была создана с опцией «Только для друзей»
+    val can_pin: Boolean?,   // Информация о том, может ли текущий пользователь закрепить запись
+    val can_delete: Boolean?,    // Информация о том, может ли текущий пользователь удалить запись
+    val can_edit: Boolean?,  // Информация о том, может ли текущий пользователь редактировать запись
+    val attachments : Array<Attachment>? = emptyArray(),    // Вложение
     val date: Long   // Время публикации записи в формате unixtime
 )
 
@@ -112,11 +113,19 @@ object views {      // Информация о просмотрах записи
 
 fun main() {
 
-    val post = Post(1, 1, 2, "Bla-Bla", true, true, false, false, timestamp)
+    val video1 = Video(15616, 154, "летящий самолет", "летящий самолет")
+    val audio1 = Audio(4234, 4543, "Deep Purple", "Smoke On The Water")
+
+    val attachmentVideo1 = VideoAttachment(video1)
+    println(attachmentVideo1.type)
+    val attachmentAudio1 = AudioAttachment(audio1)
+    println(attachmentAudio1.type)
+
+    val post = Post(1, 1, 2, "Bla-Bla", true, true, false, null, arrayOf(attachmentVideo1, attachmentAudio1), timestamp)
     WallService.add(post)
     WallService.add(post)
     WallService.printAll()
-    println(WallService.update(Post(2, 1, 3, "Update Bla-Bla", true, true, false, false, timestamp)))
+    println(WallService.update(Post(2, 1, 3, "Update Bla-Bla", true, true, false, false, arrayOf(attachmentVideo1, attachmentAudio1), timestamp)))
     WallService.printAll()
 
     val user = User(100, "Anton", "Velasco")
