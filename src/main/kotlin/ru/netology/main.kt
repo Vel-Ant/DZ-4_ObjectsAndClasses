@@ -11,6 +11,8 @@ val sdfFormat = sdf.format(timestamp)
 //  расчет World Time API
 val timestampApi = DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochSecond(timestamp / 1000))
 
+class PostNotFoundException(message: String): RuntimeException(message)
+
 data class Post(
     val id: Int,    // Идентификатор записи
     val owner_id: Int,  // Идентификатор владельца стены, на которой размещена запись
@@ -24,6 +26,12 @@ data class Post(
     val date: Long   // Время публикации записи в формате unixtime
 )
 
+data class Comment(
+    val id: Int? = null,    // Идентификатор комментария
+    val from_id: Int? = null,   // Идентификатор автора комментария
+    val text: String? = null,   // Текст комментария
+    val date: Long? = null   // Дата создания комментария в формате Unixtime
+)
 data class User(
     val id: Int,    // Идентификатор пользователя
     val first_name: String, // Имя
@@ -50,6 +58,7 @@ object UserAdd {
 object WallService {
 
     private var posts = emptyArray<Post>()
+    private var comments = emptyArray<Comment>()
     private var lastId = 0
 
     fun add(post: Post): Post {
@@ -67,6 +76,28 @@ object WallService {
         return false
     }
 
+    fun createComment(postId: Int, comment: Comment): Comment {
+        for (post in posts) {
+            if (post.id == postId) {
+                println("Комментарий ${comment.id} добавлен к посту $postId")
+                return comment
+            }
+        }
+        throw PostNotFoundException("no post with id $postId")
+    }
+    fun findById(id: Int): Post? {
+        for (post in posts) {
+            if (post.id == id) {
+                return post
+            }
+        }
+        return null
+    }
+
+    fun removeById(id: Int): Boolean {
+        TODO("Unimplemented")
+    }
+
     fun printAll() {
         for (post in posts) {
             println(post)
@@ -75,6 +106,7 @@ object WallService {
 
     fun clear() {
         posts = emptyArray()
+        comments = emptyArray()
         lastId = 0
     }
 }
@@ -138,4 +170,9 @@ fun main() {
     println("Кол-во репостов: ${reposts.count}")
     reposts.calculation(user)
     println("Кол-во репостов: ${reposts.count}")
+
+    val comment = Comment(1, 2, "Комментарий", timestamp)
+    println(comment)
+
+    WallService.createComment(1, comment)
 }

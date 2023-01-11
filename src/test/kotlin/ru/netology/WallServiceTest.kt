@@ -4,6 +4,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import ru.netology.WallService.add
+import ru.netology.WallService.createComment
 import ru.netology.WallService.update
 
 class WallServiceTest {
@@ -40,5 +41,23 @@ class WallServiceTest {
         val result = update(newPost)
 
         assertEquals(true, result)
+    }
+
+    @Test
+    fun createCommentTestCorrect() {
+        var post = add(Post(1, 1, 1, "Bla-Bla", true, true, false, false, null, timestamp))
+        var comment = Comment(1, 2, "Комментарий", timestamp)
+
+        val result = createComment(1, comment)
+
+        assertEquals(Comment(1, 2, "Комментарий", timestamp), result)
+    }
+
+    @Test(expected = PostNotFoundException::class)
+    fun shouldThrow() {
+        var post = add(Post(1, 1, 1, "Bla-Bla", true, true, false, false, null, timestamp))
+        var comment = Comment(1, 2, "Комментарий", timestamp)
+
+        val result = createComment(2, comment)
     }
 }
