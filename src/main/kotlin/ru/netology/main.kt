@@ -24,9 +24,43 @@ data class Post(
     val can_pin: Boolean = true,   // Информация о том, может ли текущий пользователь закрепить запись
     val can_delete: Boolean = true,    // Информация о том, может ли текущий пользователь удалить запись
     val can_edit: Boolean = true,  // Информация о том, может ли текущий пользователь редактировать запись
-    val attachments : Array<Attachment>? = emptyArray(),    // Вложение
+    val attachments : Array<Attachment> = emptyArray(),    // Вложение
     val date: Long = timestamp  // Время публикации записи в формате unixtime
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Post
+
+        if (post_id != other.post_id) return false
+        if (owner_id != other.owner_id) return false
+        if (from_id != other.from_id) return false
+        if (text != other.text) return false
+        if (friends_only != other.friends_only) return false
+        if (can_pin != other.can_pin) return false
+        if (can_delete != other.can_delete) return false
+        if (can_edit != other.can_edit) return false
+        if (!attachments.contentEquals(other.attachments)) return false
+        if (date != other.date) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = post_id
+        result = 31 * result + owner_id
+        result = 31 * result + from_id
+        result = 31 * result + text.hashCode()
+        result = 31 * result + friends_only.hashCode()
+        result = 31 * result + can_pin.hashCode()
+        result = 31 * result + can_delete.hashCode()
+        result = 31 * result + can_edit.hashCode()
+        result = 31 * result + attachments.contentHashCode()
+        result = 31 * result + date.hashCode()
+        return result
+    }
+}
 
 data class Comment(
     val comment_id: Int,    // Идентификатор комментария

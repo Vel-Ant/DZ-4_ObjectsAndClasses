@@ -16,14 +16,9 @@ class WallServiceTest {
         WallService.clear()
     }
 
-//    var posts = add(Post(1, 1, 1, "Bla-Bla"))
-//
-//    val result = posts.post_id
-//
-//    assertEquals(1, result)
     @Test
     fun addNewPost() {
-        var post1 = Post(1, 1, 1, "Bla-Bla")
+        val post1 = Post(0, 1, 1, "Bla-Bla")
 
         val result = add(post1)
 
@@ -32,7 +27,7 @@ class WallServiceTest {
 
     @Test
     fun updatePostFalse() {
-        val post1 = add(Post(1, 1, 1, "Bla-Bla"))
+        val post1 = add(Post(0, 1, 1, "Bla-Bla"))
 
         val result = update(Post(2, 1, 3, "Update Bla-Bla"))
 
@@ -41,7 +36,7 @@ class WallServiceTest {
 
     @Test
     fun updatePostTrue() {
-        val post1 = add(Post(1, 1, 1, "Bla-Bla"))
+        val post1 = add(Post(0, 1, 1, "Bla-Bla"))
 
         val result = update(Post(1, 1, 3, "Update Bla-Bla"))
 
@@ -50,7 +45,7 @@ class WallServiceTest {
 
     @Test
     fun createCommentTest() {
-        val post1 = add(Post(1, 1, 1, "Bla-Bla"))
+        val post1 = add(Post(0, 1, 1, "Bla-Bla"))
         val comment1 = Comment(1, 2, "Комментарий")
 
         val result = createComment(1, comment1)
@@ -60,7 +55,7 @@ class WallServiceTest {
 
     @Test(expected = PostNotFoundException::class)
     fun createCommentException() {
-        val post1 = add(Post(1, 1, 1, "Bla-Bla"))
+        val post1 = add(Post(0, 1, 1, "Bla-Bla"))
         val comment1 = Comment(1, 2, "Комментарий")
 
         val result = createComment(2, comment1)
@@ -68,7 +63,7 @@ class WallServiceTest {
 
     @Test
     fun reportCommentTestComment_id() {
-        val post1 = add(Post(1, 1, 1, "Bla-Bla"))
+        val post1 = add(Post(0, 1, 1, "Bla-Bla"))
         val comment1 = createComment(1, Comment(0, 2, "Комментарий"))
 
         val result = reportComment(1, 3)
@@ -78,7 +73,7 @@ class WallServiceTest {
 
     @Test(expected = ReasonNotFoundException::class)
     fun reportCommentTestReasonException() {
-        val post1 = add(Post(1, 1, 1, "Bla-Bla"))
+        val post1 = add(Post(0, 1, 1, "Bla-Bla"))
         val comment1 = createComment(1, Comment(0, 2, "Комментарий"))
 
         val result = reportComment(1, 9)
@@ -86,7 +81,7 @@ class WallServiceTest {
 
     @Test(expected = CommentNotFoundException::class)
     fun reportCommentException() {
-        val post1 = add(Post(1, 1, 1, "Bla-Bla"))
+        val post1 = add(Post(0, 1, 1, "Bla-Bla"))
         val comment1 = createComment(1, Comment(0, 2, "Комментарий"))
 
         val result = reportComment(2, 3)
@@ -94,16 +89,16 @@ class WallServiceTest {
 
     @Test
     fun findByIdTest() {
-        val post1 = add(Post(1, 1, 1, "Bla-Bla"))
+        val post1 = add(Post(0, 1, 1, "Bla-Bla"))
 
         val result = findById(1)
 
-        assertEquals(Post(2, 1, 1, "Bla-Bla"), result)
+        assertEquals(Post(1, 1, 1, "Bla-Bla"), result)
     }
 
     @Test(expected = PostNotFoundException::class)
     fun findByIdException() {
-        val post1 = add(Post(1, 1, 1, "Bla-Bla"))
+        val post1 = add(Post(0, 1, 1, "Bla-Bla"))
 
         val result = findById(5)
     }
